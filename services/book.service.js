@@ -2,35 +2,23 @@ import { utilService } from './util.service.js';
 import { storageService } from './async-storage.service.js';
 
 const BOOK_KEY = 'bookDB';
-// _createBooks()
+_createBooks()
 
 export const bookService = {
   query,
   get,
   remove,
   save,
+  getDefaultFilterBy,
 }
 
 function query(filterBy = {}) {
   return storageService.query(BOOK_KEY)
-  .then(books => {
-    if (filterBy.txt) {
-      const regExp = new RegExp(filterBy.txt, 'i')
-        books = books.filter(book => regExp.test(book.title))
+    .then(books => {
+      if (filterBy.txt) { 
+        books = books.filter(book => book.title.toLowerCase().includes(filterBy.txt.toLowerCase()))
       }
-
-      if (filterBy.minPrice) {
-        books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
-      }
-
-      if (filterBy.maxPrice) {
-        books = books.filter(book => book.listPrice.amount <= filterBy.maxPrice)
-      }
-
-      if (filterBy.category) {
-        books = books.filter(book => book.categories.includes(filterBy.category))
-      }
-
+    console.log(books)
       return books
     })
 }
@@ -54,3 +42,38 @@ function save(book) {
   }
 }
 
+function getDefaultFilterBy() {
+  return {
+    title: ''
+  }
+}
+
+function _createBooks() {
+  const ctgs = ['Love', 'Fiction', 'Poetry', 'Computers', 'Religion']
+  const authors = ['John Doe', 'Jane Doe', 'Alice Wonderland', 'Bob The Builder', 'Charlie Brown', 'Dora The Explorer']
+  const books = []
+  for (let i = 0; i < 20; i++) {
+    const book = {
+    id: utilService.makeId(),
+    title: utilService.makeLorem(2),
+    subtitle: utilService.makeLorem(4),
+    authors: [authors[utilService.getRandomIntInclusive(0, authors.length - 1)]],
+    publishedDate: utilService.getRandomIntInclusive(1950, 2024),
+    description: utilService.makeLorem(20),
+    pageCount: utilService.getRandomIntInclusive(150, 600),
+    categories: [ctgs[utilService.getRandomIntInclusive(0, ctgs.length - 1)]],
+    thumbnail: `http://coding-academy.org/books-photos/${i+1}.jpg`,
+    language: "en",
+    listPrice: {
+      amount: utilService.getRandomIntInclusive(5, 100),
+      currencyCode: "EUR",
+      isOnSale: Math.random() > 0.7
+    }
+  }
+  books.push(book)
+  }
+  
+utilService.saveToStorage(BOOK_KEY, books);
+
+console.log('books', books)
+}

@@ -1,0 +1,14 @@
+.form-filter {
+  display: flex;
+  flex-direction: column;
+  background-color:cadetblue;
+  padding: 1rem;
+  border-radius: 5px;
+  gap: 5px;
+}
+
+.form-filter input {
+  width: 25%;
+  border: none;
+  border-radius: 5px;
+}

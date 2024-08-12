@@ -6,6 +6,11 @@ export const utilService = {
     getRandomIntInclusive,
     getDayName,
     getMonthName,
+    getRandomAuthor,
+    getRandomYear,
+    getRandomCategories,
+    getRandomCurrency,
+    getRandomLanguage,
     animateCSS
 }
 
@@ -56,6 +61,30 @@ function getMonthName(date) {
         'July', 'August', 'September', 'October', 'November', 'December'
     ]
     return monthNames[date.getMonth()]
+}
+
+function getRandomAuthor() {
+    const authors = ['Barbara Cartland', 'Stephen King', 'J.K. Rowling', 'George Orwell', 'Jane Austen']
+    return authors[getRandomIntInclusive(0, authors.length - 1)]
+}
+
+function getRandomYear() {
+    return getRandomIntInclusive(1990, 2021)
+}
+
+function getRandomCategories() {
+    const categories = ['Fiction', 'Science Fiction', 'Fantasy', 'Mystery', 'Romance', 'Horror']
+    return categories[getRandomIntInclusive(0, categories.length - 1)]
+}
+
+function getRandomCurrency() {
+    const currencies = ['USD', 'EUR', 'ILS', 'GBP']
+    return currencies[getRandomIntInclusive(0, currencies.length - 1)]
+}
+
+function getRandomLanguage() {
+    const languages = ['English', 'Hebrew', 'Spanish', 'French', 'German']
+    return languages[getRandomIntInclusive(0, languages.length - 1)]
 }
 
 function animateCSS(el, animation='bounce') {
